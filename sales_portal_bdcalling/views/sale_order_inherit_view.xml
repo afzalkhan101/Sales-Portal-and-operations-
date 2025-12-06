@@ -1,0 +1,75 @@
+<odoo>
+    <data>
+
+
+        <record id="view_order_form_inherit_tabs" model="ir.ui.view">
+            <field name="name">sale.order.inherit.tabs</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Order Details">
+                      <group string="Sales Employee Details">
+                            <field name="employee_id"/>
+                            <field name="employee_barcode"/>
+                            <field name="company_id"/>
+                    </group>
+
+                     <group string="Order Details">
+                         <group string="Order Source">
+                            <field name="platform_source_id"/>
+                            <field name="profile_name_id"/>
+                            <field name="order_source_id"/>
+                            <field name="client_id"/>
+                        </group>
+
+                    
+
+                    <group string="Order Information">
+                          <field name="shift"/>
+                          <field name="order_number"/>
+                          <field name="order_link"/>
+                          <field name="instruction_sheet_link"/>
+                          <field name="service_type_id"/>
+                          <field name="order_status"/>
+                    </group>
+
+                    </group>
+                
+                    <group>
+                     <group string="Dates and Deadline">
+                            <field name="incoming_date"/>
+                            <field name="delivery_last_date"/>
+                            <field name="deadline"/>
+                     </group>
+                     <group string="pricing">
+                         <field name="sales_amount"/>
+                         <field name="percentage"/>
+                         <field name="charges_amount"/>
+                         <field name="delivery_amount"/>
+                     </group>
+                        
+                     </group>
+
+                     <group>
+                      <group string="Assignment">
+                            <field name="assign_team_id"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="special_remarks"/>
+                      </group>
+                     </group>
+
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <menuitem id="bd_others_menu_id"
+              name="Others"
+              parent="sale.menu_sale_config"
+              sequence="500"
+         />
+
+
+    </data>
+</odoo>

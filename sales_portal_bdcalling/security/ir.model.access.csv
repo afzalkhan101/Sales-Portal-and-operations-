@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bd_team_user,bd.team.user,model_bd_team,base.group_user,1,1,1,0
+access_bd_team_manager,bd.team.manager,model_bd_team,base.group_erp_manager,1,1,1,1
+access_bd_platform_source_user,bd.platform.source.user,model_bd_platform_source,base.group_user,1,1,1,0
+access_bd_platform_source_manager,bd.platform.source.manager,model_bd_platform_source,base.group_erp_manager,1,1,1,1
+access_bd_order_source_user,bd.order.source.user,model_bd_order_source,base.group_user,1,1,1,0
+access_bd_order_source_manager,bd.order.source.manager,model_bd_order_source,base.group_erp_manager,1,1,1,1
+access_bd_profile_name_user,bd.profile.name.user,model_bd_profile_name,base.group_user,1,1,1,0
+access_bd_profile_name_manager,bd.profile.name.manager,model_bd_profile_name,base.group_erp_manager,1,1,1,1
+access_product_template_portal_user,product.template.portal.user,model_product_template,base.group_user,1,0,0,0
+access_product_template_portal_manager,product.template.portal.manager,model_product_template,base.group_erp_manager,1,1,1,0
+access_bd_team_user,bd.team.user,model_bd_assign_team,base.group_user,1,1,1,0
+access_bd_team_manager,bd.team.manager,model_bd_assign_team,base.group_erp_manager,1,1,1,1

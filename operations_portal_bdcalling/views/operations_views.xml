@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_project_operation_tree" model="ir.ui.view">
+        <field name="name">project.operation.list</field>
+        <field name="model">project.operation</field>
+        <field name="arch" type="xml">
+            <list string="Project Operations">
+                <field name="order_id"/>
+                <field name="employee_name"/>
+                <field name="employee_id_barcode"/>
+                <field name="project"/>
+                <field name="partner_id"/>
+                <field name="order_status"/>
+                <field name="assigned_team_id"/>
+                <field name="revision_count"/>
+                <field name="date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_project_operation_form" model="ir.ui.view">
+        <field name="name">project.operation.form</field>
+        <field name="model">project.operation</field>
+        <field name="arch" type="xml">
+            <form string="Project Operation">
+                <sheet>
+
+                   <div>
+                      <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    
+                    <group>
+                    <field name="order_id" options="{'no_create': True}"/> 
+                    </group>
+
+                    <group string="Employee Details">
+                          <group string="Assignee Employee Details">
+                               <field name ="employee_id"/>
+                               <field name="employee_id_barcode"/>
+                               <field name="company_name"/>
+                          </group>
+                          <group string="Assigned Employee Details">
+                               <field name="assigned_team_id" 
+                                    options="{'no_create': True}"/>
+                                <field name="available_team_member_ids" invisible="1"/>
+                                <field name="team_member_id" 
+                                    invisible="assigned_team_id == False"
+                                    options="{'no_create': True}"/>
+
+                              <field name="employee_barcode" string="Employee ID"/>
+                              <field name="company_id"/>
+                          </group>
+                    </group>
+
+                    <group string="Operation Details">
+                    
+                     <group string="Basic Operation Info">
+                        <field name="date"/>
+                        <field name="so_id"/>
+                        <field name="client_id"/>
+                        <field name="instruction_sheet_link"/>
+                        <field name="order_status"/>
+                        </group>
+                        <group string="Operation Status Details">
+                             <field name="operation_status"/>
+                             <field name="revision_count"/>
+                             <field name="special_remarks"/>
+                        </group>
+                    </group>
+
+                    <group string="Financial Details">
+                       <field name="sales_amount_"/>
+                       <field name="percentage_"/>
+                       <field name="delivery_amount"/>
+                       <field name="remaining_value"/>
+                       <field name="monetary_value"/>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_project_operation" model="ir.actions.act_window">
+        <field name="name">Project Operations</field>
+        <field name="res_model">project.operation</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Project Operation.
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="menu_project_operation_root" name="Project Operations"/>
+
+    <menuitem id="menu_project_operation" 
+              name="Operations" 
+              parent="menu_project_operation_root" 
+              action="action_project_operation"/>
+</odoo>
