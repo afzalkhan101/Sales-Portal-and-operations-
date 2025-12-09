@@ -29,9 +29,15 @@
                    <div>
                       <h1><field name="name" readonly="1"/></h1>
                     </div>
-                    
+                  
+                  <group>
                     <group>
                     <field name="order_id" options="{'no_create': True}"/> 
+                    </group>
+                    <group>
+                      <field name="operation_description"/>
+                    </group>
+
                     </group>
 
                     <group string="Employee Details">
@@ -59,6 +65,7 @@
                         <field name="date"/>
                         <field name="so_id"/>
                         <field name="client_id"/>
+                        <field name="order_link"/>
                         <field name="instruction_sheet_link"/>
                         <field name="order_status"/>
                         </group>

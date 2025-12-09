@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_kpi_role_list" model="ir.ui.view">
+        <field name="name">kpi.role.list</field>
+        <field name="model">kpi.role</field>
+        <field name="arch" type="xml">
+            <list string="KPI Roles">
+                <field name="company_id" width="200" readonly="state != 'draft' "/>
+                <field name="name" width="200" readonly="state != 'draft' "/>
+                <field name="is_active" widget="boolean_toggle" width="200" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_kpi_role_form" model="ir.ui.view">
+        <field name="name">kpi.role.form</field>
+        <field name="model">kpi.role</field>
+        <field name="arch" type="xml">
+            <form string="KPI Role">
+                 <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    <button name="action_confirm" string="Confirm" class="oe_highlight" type="object" icon="fa-check" invisible="state != 'draft'"/>
+                    <button name="action_draft" string="Reset to Draft" type="object" icon="fa-undo" class="btn-secondary" invisible="state != 'done'"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"  />
+                        <h1>
+                            <field name="name" placeholder="Enter Role Name" readonly="state != 'draft' "/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" readonly="state != 'draft' "/>
+                            <field name="role_type" readonly="state != 'draft' "/>
+                            <field name="is_active" readonly="state != 'draft' "/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state != 'draft' "/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_kpi_role" model="ir.actions.act_window">
+        <field name="name">KPI Roles</field>
+        <field name="res_model">kpi.role</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new KPI Role
+            </p>
+            <p>
+                Define roles that will be used for KPI grading and level assignments.
+            </p>
+        </field>
+    </record>
+
+    <record id="view_kpi_grade_list" model="ir.ui.view">
+        <field name="name">kpi.grade.list</field>
+        <field name="model">kpi.grade</field>
+        <field name="arch" type="xml">
+            <list string="KPI Grades">
+                <field name="name" width="100"/>
+                <field name="role_id" width="100"/>
+                <field name="minimum_target" width="100"/>
+                <field name="minimum_salary" width="100"/>
+                <field name="maximum_salary" width="100"/>
+                 <field name="is_active" widget="boolean_toggle" width="100"/>
+                <field name="company_id" groups="base.group_multi_company" width="100"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_kpi_grade_form" model="ir.ui.view">
+        <field name="name">kpi.grade.form</field>
+        <field name="model">kpi.grade</field>
+        <field name="arch" type="xml">
+            <form string="KPI Grade">
+                 <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    <button name="action_confirm" string="Confirm" class="oe_highlight" type="object" icon="fa-check" invisible="state != 'draft'"/>
+                    <button name="action_draft" string="Reset to Draft" type="object" icon="fa-undo" class="btn-secondary" invisible="state != 'done'"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"  />
+                        <h1>
+                            <field name="name" placeholder="Enter Grade Name" readonly="state != 'draft' "/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Basic Information">
+                            <field name="role_id" readonly="state != 'draft' "/>
+                             <field name="company_id" readonly="state != 'draft' "/>
+                            <field name="minimum_target" readonly="state != 'draft' "/>
+                        </group>
+
+                        <group string="Additional Informations">
+                            <field name ="is_active" readonly="state != 'draft' "/>
+                            <field name="minimum_salary" readonly="state != 'draft' "/>
+                            <field name="maximum_salary" readonly="state != 'draft' "/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Levels" name="levels">
+                            <field name="level_ids" readonly="state != 'draft' ">
+                                <list string="KPI Levels" editable="bottom" >
+                                    
+                                    <field name="name" width="100"/>
+                                    <field name="min_amount" width="100"/>
+                                    <field name="max_amount" width="100"/>
+                                    <field name="bonus_amount" width="100"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_kpi_grade" model="ir.actions.act_window">
+        <field name="name">KPI Grades</field>
+        <field name="res_model">kpi.grade</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new KPI Grade
+            </p>
+            <p>
+                Define grades with target thresholds and salary ranges for different roles.
+            </p>
+        </field>
+    </record>
+
+    <!-- KPI Level Views -->
+    <record id="view_kpi_level_list" model="ir.ui.view">
+        <field name="name">kpi.level.list</field>
+        <field name="model">kpi.level</field>
+        <field name="arch" type="xml">
+            <list string="KPI Levels">
+                <field name="name"/>
+                <field name="grade_id"/>
+                <field name="min_amount"/>
+                <field name="max_amount"/>
+                <field name="bonus_amount"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_kpi_level_form" model="ir.ui.view">
+        <field name="name">kpi.level.form</field>
+        <field name="model">kpi.level</field>
+        <field name="arch" type="xml">
+            <form string="KPI Level">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="grade_id"/>
+                        </group>
+                        <group>
+                            <field name="min_amount"/>
+                            <field name="max_amount"/>
+                            <field name="bonus_amount"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_kpi_level" model="ir.actions.act_window">
+        <field name="name">KPI Levels</field>
+        <field name="res_model">kpi.level</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new KPI Level
+            </p>
+            <p>
+                Define performance levels with amount ranges and bonus calculations.
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="menu_kpi_root" name="KPI Management" sequence="10"/>
+    
+    <menuitem id="menu_kpi_configuration" name="Configuration" parent="menu_kpi_root" sequence="100"/>
+    
+    <menuitem id="menu_kpi_role" name="KPI Roles" parent="menu_kpi_configuration" action="action_kpi_role" sequence="10"/>
+    
+    <menuitem id="menu_kpi_grade" name=" KPI Grades" parent="menu_kpi_configuration" action="action_kpi_grade" sequence="20"/>
+
+
+</odoo>

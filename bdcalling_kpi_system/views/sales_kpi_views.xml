@@ -1,0 +1,93 @@
+<odoo>
+    <record id="view_sales_kpi_list" model="ir.ui.view">
+        <field name="name">sales.kpi.list</field>
+        <field name="model">sales.kpi</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="role_id" width="100"/>
+                <field name="grade_id" width="100"/>
+                <field name="this_month_target" width="100"/>
+                <field name="total_operations" width="100"/>
+                <field name="shortfall_amount" width="100"/>
+                <field name="period_start" width="100"/>
+                <field name="period_end" width="100"/>
+                <field name="company_id" width="100"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sales_kpi_form" model="ir.ui.view">
+        <field name="name">sales.kpi.form</field>
+        <field name="model">sales.kpi</field>
+        <field name="arch" type="xml">
+            <form>
+                 <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,calculated,done,paid"/>
+                    <button name="action_calculate"
+                            string="Calculate"
+                            type="object"
+                            class="btn btn-primary"
+                            icon="fa-calculator"
+                            invisible="state != 'draft'"/>
+                    <button name="action_confirm"
+                            string="Confirm"
+                            type="object"
+                            class="btn btn-primary"
+                            icon="fa-check"
+                            invisible="state !='calculated'"/>
+                            
+                    <button name="action_draft"
+                            string="Reset to Draft"
+                            type="object"
+                            class="btn btn-secondary"
+                            icon="fa-undo"
+                            invisible="state != 'done'"/>
+                    <button name="action_mark_paid"
+                            string="Mark as Paid"
+                            type="object"
+                            class="btn btn-success"
+                            icon="fa-money"
+                            invisible="state != 'done'"/>
+                </header>
+
+                <sheet>
+                  <div class="oe_title">
+                        <label for="employee_id" class="oe_edit_only"  />
+                        <h1>
+                            <field name="employee_id" placeholder="Enter Employee " readonly="state in ('done','paid')"/>
+                        </h1>
+                    </div>
+
+                  <group>
+                     <group string="Basic Informations">
+                        <field name="role_id" readonly="state in ('done','paid')"/>
+                        <field name="grade_id" readonly="state in ('done','paid')"/>
+                        <field name="this_month_target" readonly="state in ('done','paid')"/>
+                        <field name="total_operations" readonly="state in ('done','paid')"/>
+                        <field name="shortfall_amount" decoration-danger="state in ('calculated' , 'done' , 'paid')" readonly="state in ('done','paid')"/>
+                     </group>
+                     
+                     <group string="Additional Informations">
+                         <field name="period_start" readonly="state in ('done','paid')"/>
+                         <field name="period_end" readonly="state in ('done','paid')"/>
+                        <field name="company_id" readonly="state in ('done','paid')"/>
+                        <field name="bonus_amount"  decoration-success="state in ('calculated','done','paid')" readonly="state in ('done','paid')"/>
+                     </group>
+                  </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="sales_kpi_action" model="ir.actions.act_window">
+        <field name="name">Sales KPI</field>
+        <field name="res_model">sales.kpi</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="sales_kpi_menu_root"
+              name="Sales KPI"
+              parent="menu_kpi_root" action="sales_kpi_action" sequence="20" />
+
+</odoo>

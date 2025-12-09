@@ -59,7 +59,8 @@ class SaleOrder(models.Model):
 
     incoming_date = fields.Date(string="Incoming Date")
     delivery_last_date = fields.Date(string="Delivery Last Date")
-    deadline = fields.Datetime(string="Deadline", compute="_compute_deadline", store=True)
+    deadline = fields.Char(string="Deadline", compute="_compute_deadline", store=True)
+    delivery_date = fields.Date()
     sales_amount = fields.Float(string="Sales Amount")
     percentage = fields.Float(string="Percentage (%)")
     charges_amount =fields.Float(string="Charges Amount")
@@ -123,15 +124,21 @@ class SaleOrder(models.Model):
 
     @api.depends('delivery_last_date')
     def _compute_deadline(self):
-        today = datetime.now()
+        today = date.today()
         for record in self:
             if record.delivery_last_date:
-                delivery_datetime = datetime.combine(record.delivery_last_date, datetime.max.time())
-                record.deadline = delivery_datetime
-                if delivery_datetime < today:
-                    record.deadline = delivery_datetime 
-            else:
-                record.deadline = False
+                delta = record.delivery_last_date - today
+                if delta.days >= 0:
+                    record.deadline = f"{delta.days} days remaining"
+                else:
+                    record.deadline = "Deadline passed"
+
+    @api.onchange("order_status")
+    def _onchange_delivery_order(self):
+        if self.order_status =="delivered":
+            self.delivery_date  = date.today()
+            print("#########Today Date",self.delivery_date)
+       
 
     @api.onchange("employee_id")
     def get_employee_barcode(self):

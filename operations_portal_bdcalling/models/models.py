@@ -15,8 +15,8 @@ class EmployeeOrderDetails(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'name'
 
-    name = fields.Char(string="Reference", default="New", readonly=True )
-
+    name = fields.Char(string="Reference", default="New", readonly=True ,)
+    operation_description =fields.Text(string="Description")
     employee_id = fields.Many2one(
         'hr.employee', 
         string='Employee', 
@@ -28,7 +28,7 @@ class EmployeeOrderDetails(models.Model):
     employee_name = fields.Char(related='employee_id.name', string='Employee Name', store=True)
     user_id = fields.Many2one(related='employee_id.user_id', string='User', store=True)
     company_name = fields.Char(related='employee_id.company_id.name', string='Company', store=True)
-
+    delivery_date =fields.Date()
     so_id = fields.Char(string='Sale Order')
     order_id = fields.Many2one(
         'sale.order', 
@@ -109,6 +109,12 @@ class EmployeeOrderDetails(models.Model):
         store=False
     )
 
+    @api.onchange("operation_status")
+    def _onchange_delivery_order(self):
+        if self.operation_status =="delivered":
+            self.delivery_date  = date.today()
+            
+
     @api.depends('assigned_team_id', 'assigned_team_id.members_ids')
     def _compute_available_team_members(self):
         for record in self:
@@ -133,12 +139,10 @@ class EmployeeOrderDetails(models.Model):
 
     @api.model
     def create(self, vals_list):
-        # Ensure vals_list is always a list
         if isinstance(vals_list, dict):
             vals_list = [vals_list]
         records_to_create = []
         for vals in vals_list:
-            # Generate sequence name if not provided
             if vals.get('name', 'New') == 'New':
                 last_record = self.search([('name', 'like', 'M/D/%')], order='id desc', limit=1)
                 if last_record and last_record.name:
@@ -154,9 +158,8 @@ class EmployeeOrderDetails(models.Model):
                 vals['name'] = f"OP{next_seq}"
 
             records_to_create.append(vals)
-        # Create all records at once
         records = super(EmployeeOrderDetails, self).create(records_to_create)
-        # Calculate remaining_value for each record
+
         for record in records:
             if record.order_id:
                 last_operation = self.search(
